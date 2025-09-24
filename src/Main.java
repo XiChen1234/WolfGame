@@ -58,7 +58,7 @@ public class Main {
      * 解析命令行参数，获取模拟轮数
      */
     private static int parseTotalRounds(String[] args) {
-        int defaultRounds = 10;
+        int defaultRounds = 1000;
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
                 if (args[i].equals("--rounds") && i + 1 < args.length) {
