@@ -5,6 +5,7 @@ import com.wolfgame.core.Game;
 import com.wolfgame.core.Player;
 import com.wolfgame.core.Role;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -137,6 +138,10 @@ public class Statistics {
      */
     public void saveReportToFile() {
         String report = generateReport();
+        File reportDir = new File("res/");
+        if (!reportDir.exists()) {
+            reportDir.mkdirs();
+        }
         String fileName = "res/report.txt";
         
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {

@@ -3,6 +3,7 @@ package com.wolfgame.util;
 import com.wolfgame.core.Camp;
 import com.wolfgame.core.Player;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -185,6 +186,10 @@ public class Log {
      * 将日志保存到文件
      */
     public void saveToFile() {
+        File logDir = new File("res/logs");
+        if (!logDir.exists()) {
+            logDir.mkdirs();
+        }
         String fileName = "res/logs/log" + gameId + ".txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             writer.write(logContent.toString());
