@@ -43,8 +43,8 @@ public class RandomStrategy implements Strategy {
     
     @Override
     public Player usePoison(Player witch, List<Player> allPlayers) {
-        // 30%的概率使用毒药
-        if (random.nextDouble() < 0.3) {
+        // 50%的概率使用毒药
+        if (random.nextDouble() < 0.5) {
             // 随机选择一个非女巫且存活的玩家
             List<Player> targets = allPlayers.stream()
                     .filter(p -> !p.equals(witch) && p.isAlive())
@@ -59,8 +59,8 @@ public class RandomStrategy implements Strategy {
     
     @Override
     public Player useGun(Player hunter, boolean isPoisoned, List<Player> allPlayers) {
-        // 如果不是被毒死，有70%的概率开枪
-        if (!isPoisoned && random.nextDouble() < 0.7) {
+        // 如果不是被毒死，有50%的概率开枪
+        if (!isPoisoned && random.nextDouble() < 0.5) {
             // 随机选择一个非猎人且存活的玩家
             List<Player> targets = allPlayers.stream()
                     .filter(p -> !p.equals(hunter) && p.isAlive())
