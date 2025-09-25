@@ -10,24 +10,22 @@ import java.util.stream.Collectors;
  * 游戏主控制类，负责游戏流程的控制和胜负判定
  */
 public class Game {
-    private int gameId; // 游戏ID
     private List<Player> players; // 所有玩家列表
     private int dayCount; // 天数计数
     private boolean isGameOver; // 游戏是否结束
     private Camp winnerCamp; // 胜利阵营
-    private Log gameLog; // 游戏日志
-    private Map<Role, Strategy> roleStrategies; // 角色策略映射
-    private Random random; // 随机数生成器
-    private boolean autidoteUsed; // 解药是否已使用
-    private boolean poisonUsed; // 毒药是否已使用
+    private final Log gameLog; // 游戏日志
+    private final Map<Role, Strategy> roleStrategies; // 角色策略映射
+    private final Random random; // 随机数生成器
+    private boolean antidoteUsed; // 解药是否已使用
+    private final boolean poisonUsed; // 毒药是否已使用
 
     public Game(int gameId, Map<Role, Strategy> roleStrategies, long randomSeed) {
-        this.gameId = gameId;
         this.roleStrategies = roleStrategies;
         this.random = new Random(randomSeed);
         this.dayCount = 0;
         this.isGameOver = false;
-        this.autidoteUsed = false;
+        this.antidoteUsed = false;
         this.poisonUsed = false;
         this.gameLog = new Log(gameId);
         initializePlayers();
@@ -103,7 +101,7 @@ public class Game {
         Player victim = null;
         if (!wolves.isEmpty()) {
             // 狼人共同商议选择击杀目标（这里简化为使用第一个狼人的策略）
-            victim = wolves.get(0).getStrategy().chooseKillTarget(wolves, players);
+            victim = wolves.getFirst().getStrategy().chooseKillTarget(wolves, players);
             if (victim != null) {
                 gameLog.logWolfKill(victim);
             }
@@ -127,14 +125,14 @@ public class Game {
                 .findFirst().orElse(null);
         if (witch != null) {
             // 检查是否使用解药
-            if (victim != null && !autidoteUsed && witch.getStrategy().useAntidote(witch, victim, players)) {
+            if (victim != null && !antidoteUsed && witch.getStrategy().useAntidote(witch, victim, players)) {
                 gameLog.logWitchSave(victim);
                 victim = null; // 被害人被救活
-                autidoteUsed = true; // 解药已使用
+                antidoteUsed = true; // 解药已使用
             }
 
             // 检查是否使用毒药
-            if (!poisonUsed && !autidoteUsed) {
+            if (!poisonUsed && !antidoteUsed) {
                 Player poisonTarget = witch.getStrategy().usePoison(witch, players);
                 if (poisonTarget != null) {
                     gameLog.logWitchPoison(poisonTarget);
@@ -270,10 +268,6 @@ public class Game {
     }
 
     // getter方法
-    public int getGameId() {
-        return gameId;
-    }
-
     public boolean isGameOver() {
         return isGameOver;
     }

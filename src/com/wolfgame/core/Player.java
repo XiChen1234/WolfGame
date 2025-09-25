@@ -6,9 +6,9 @@ import com.wolfgame.strategy.Strategy;
  * 玩家类，包含玩家基本信息、角色、状态和策略
  */
 public class Player {
-    private int id;              // 玩家ID
-    private String name;         // 玩家名称
-    private Role role;           // 角色
+    private final int id;              // 玩家ID
+    private final String name;         // 玩家名称
+    private final Role role;           // 角色
     private boolean isAlive;     // 是否存活
     private boolean isPoisoned;  // 是否被女巫毒死（用于猎人技能判断）
     private Strategy strategy;   // AI策略
@@ -26,7 +26,7 @@ public class Player {
     public int getId() {
         return id;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -54,11 +54,11 @@ public class Player {
     public Strategy getStrategy() {
         return strategy;
     }
-    
+
     public void setStrategy(Strategy strategy) {
         this.strategy = strategy;
     }
-    
+
     /**
      * 获取玩家所属阵营
      */

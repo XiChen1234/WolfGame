@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
  * 日志类，负责记录游戏过程和结果
  */
 public class Log {
-    private int gameId;           // 游戏ID
-    private StringBuilder logContent; // 日志内容
-    private SimpleDateFormat dateFormat; // 日期格式化
+    private final int gameId;           // 游戏ID
+    private final StringBuilder logContent; // 日志内容
+    private final SimpleDateFormat dateFormat; // 日期格式化
     
     public Log(int gameId) {
         this.gameId = gameId;
@@ -26,7 +26,7 @@ public class Log {
         
         // 记录日志开始时间
         logContent.append("=== 狼人杀游戏 #").append(gameId).append(" 日志 ===\n");
-        logContent.append("开始时间: " + dateFormat.format(new Date())).append("\n\n");
+        logContent.append("开始时间: ").append(dateFormat.format(new Date())).append("\n\n");
     }
     
     /**
@@ -167,7 +167,7 @@ public class Log {
         logContent.append("存活玩家：\n");
         List<Player> alivePlayers = players.stream()
                 .filter(Player::isAlive)
-                .collect(Collectors.toList());
+                .toList();
         
         if (!alivePlayers.isEmpty()) {
             for (Player player : alivePlayers) {
@@ -178,7 +178,7 @@ public class Log {
         }
         
         // 记录结束时间
-        logContent.append("结束时间: " + dateFormat.format(new Date())).append("\n");
+        logContent.append("结束时间: ").append(dateFormat.format(new Date())).append("\n");
         logContent.append("====================\n");
     }
     
@@ -197,12 +197,5 @@ public class Log {
         } catch (IOException e) {
             System.err.println("保存日志文件失败：" + e.getMessage());
         }
-    }
-    
-    /**
-     * 获取日志内容
-     */
-    public String getLogContent() {
-        return logContent.toString();
     }
 }
