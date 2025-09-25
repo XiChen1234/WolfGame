@@ -18,6 +18,7 @@ public class Game {
     private final Map<Role, Strategy> roleStrategies; // 角色策略映射
     private final Random random; // 随机数生成器
     private boolean antidoteUsed; // 解药是否已使用
+    private boolean lock; // 单回合解药锁/毒药锁
     private final boolean poisonUsed; // 毒药是否已使用
 
     public Game(int gameId, Map<Role, Strategy> roleStrategies, long randomSeed) {
@@ -26,6 +27,7 @@ public class Game {
         this.dayCount = 0;
         this.isGameOver = false;
         this.antidoteUsed = false;
+        this.lock = false;
         this.poisonUsed = false;
         this.gameLog = new Log(gameId);
         initializePlayers();
@@ -124,15 +126,17 @@ public class Game {
                 .filter(p -> p.getRole() == Role.WITCH)
                 .findFirst().orElse(null);
         if (witch != null) {
+            lock = false; // 解药锁/毒药锁关闭
             // 检查是否使用解药
             if (victim != null && !antidoteUsed && witch.getStrategy().useAntidote(witch, victim, players)) {
                 gameLog.logWitchSave(victim);
                 victim = null; // 被害人被救活
                 antidoteUsed = true; // 解药已使用
+                lock = true; // 解药锁打开
             }
 
-            // 检查是否使用毒药
-            if (!poisonUsed && !antidoteUsed) {
+            // 检查是否使用毒药：1. 毒药未被使用；2. 本回合未使用解药
+            if (!poisonUsed && !lock) {
                 Player poisonTarget = witch.getStrategy().usePoison(witch, players);
                 if (poisonTarget != null) {
                     gameLog.logWitchPoison(poisonTarget);
